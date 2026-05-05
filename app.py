@@ -46,6 +46,10 @@ html, body {
     padding: 0 !important;
 }
 
+.gradio-container .main.fillable {
+    padding: 0 !important;
+}
+
 #main-row {
     display: flex !important;
     flex-wrap: nowrap !important;
