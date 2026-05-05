@@ -68,16 +68,17 @@ html, body {
 }
 
 #col-left, #col-middle {
-    display: flex !important;
-    flex-direction: column !important;
+    display: grid !important;
+    grid-template-rows: minmax(0, 1fr) auto !important;
     gap: 10px !important;
     overflow: hidden !important;
 }
 
 #input-image, #output-image {
-    flex: 1 1 auto !important;
+    align-self: stretch !important;
     min-height: 0 !important;
-    height: auto !important;
+    height: 100% !important;
+    overflow: hidden !important;
 }
 
 #input-image .image-container,
@@ -102,7 +103,9 @@ html, body {
 }
 
 #render-btn, #fullscreen-btn {
-    flex: 0 0 auto !important;
+    align-self: stretch !important;
+    min-height: 40px !important;
+    max-height: 48px !important;
 }
 
 #col-right {
