@@ -43,6 +43,7 @@ html, body {
     height: 100vh !important;
     max-height: 100vh !important;
     overflow: hidden !important;
+    padding: 0 !important;
 }
 
 #main-row {
@@ -54,6 +55,7 @@ html, body {
     padding-top: var(--app-title-height) !important;
     margin-top: 0 !important;
     align-items: flex-start !important;
+    box-sizing: border-box !important;
 }
 
 #col-left, #col-middle, #col-right {
@@ -66,7 +68,41 @@ html, body {
 }
 
 #col-left, #col-middle {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
     overflow: hidden !important;
+}
+
+#input-image, #output-image {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: auto !important;
+}
+
+#input-image .image-container,
+#output-image .image-container,
+#input-image .wrap,
+#output-image .wrap {
+    height: 100% !important;
+    min-height: 0 !important;
+}
+
+#input-image [data-testid="image"],
+#output-image [data-testid="image"] {
+    height: 100% !important;
+}
+
+#input-image img,
+#output-image img,
+#input-image canvas,
+#output-image canvas {
+    max-height: 100% !important;
+    object-fit: contain !important;
+}
+
+#render-btn, #fullscreen-btn {
+    flex: 0 0 auto !important;
 }
 
 #col-right {
@@ -168,6 +204,7 @@ JS_INIT = """
         row.style.marginTop = '0';
         row.style.height = '100vh';
         row.style.maxHeight = '100vh';
+        row.style.boxSizing = 'border-box';
         for (const id of ['col-left', 'col-middle', 'col-right']) {
             const col = document.getElementById(id);
             if (col) {
@@ -821,18 +858,20 @@ def build_ui() -> gr.Blocks:
         with gr.Row(elem_id="main-row", equal_height=False):
             # === Left: Upload + Render button ===
             with gr.Column(scale=1, min_width=200, elem_id="col-left"):
-                input_image = gr.Image(label=text["upload_image"], type="numpy", height=780)
-                render_btn = gr.Button(text["render"], variant="primary", size="lg")
+                input_image = gr.Image(label=text["upload_image"], type="numpy", elem_id="input-image")
+                render_btn = gr.Button(
+                    text["render"], variant="primary", size="lg", elem_id="render-btn",
+                )
 
             # === Middle: Result ===
             with gr.Column(scale=3, min_width=400, elem_id="col-middle"):
                 output_image = gr.Image(
                     label=text["rendered_output"],
                     type="pil",
-                    height=780,
                     interactive=False,
                     format="png",
                     buttons=["download"],
+                    elem_id="output-image",
                 )
                 fullscreen_btn = gr.Button(text["fullscreen"], size="sm", elem_id="fullscreen-btn")
 
