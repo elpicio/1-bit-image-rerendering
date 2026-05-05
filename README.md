@@ -1,6 +1,6 @@
-# ReShader
+# 1-bit Image Rerendering
 
-ReShader is a Gradio app for interactive 1-bit image rerendering. It supports image upload, dithering algorithm selection, dot spacing, contrast and brightness controls, edge overlays, two-color output, dual-region dithering, output resizing, and file export.
+1-bit Image Rerendering is a Gradio app for interactive monochrome image stylization. The app UI is named ReShader, and it supports image upload, dithering algorithm selection, dot spacing, contrast and brightness controls, edge overlays, two-color output, dual-region dithering, output resizing, and file export.
 
 ## Installation
 
