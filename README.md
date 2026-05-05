@@ -36,6 +36,7 @@ http://localhost:7860
 | Style presets | Includes high-contrast manga, ditherpunk, copier zine, e-ink, and halftone presets |
 | Color presets | Provides muted foreground and background color pairs that can be combined with any style preset |
 | Output size | Exports to a target width and height with center cropping when aspect ratios differ |
+| Language switch | Switches the UI between English and Chinese while keeping stable internal preset values |
 | Export | Supports png, jpg, bmp, and tiff |
 
 ## Project Layout

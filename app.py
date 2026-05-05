@@ -240,6 +240,10 @@ STYLE_PRESET_FIELDS = [
 ]
 
 COLOR_FIELDS = ["fg_color", "bg_color", "use_fg", "use_bg"]
+LANG_EN = "English"
+LANG_ZH = "中文"
+DEFAULT_STYLE_PRESET = "Basic Atkinson"
+DEFAULT_COLOR_PRESET = "Warm Gray Paper"
 
 PRESETS = {
     "Basic Atkinson": {
@@ -416,6 +420,166 @@ COLOR_PRESETS = {
     "Night Blue Matte": ("#252E3A", "#D3D1C7", True, True),
 }
 
+STYLE_PRESET_LABELS_ZH = {
+    "Basic Atkinson": "基础 Atkinson",
+    "Horror Manga High Contrast": "恐怖漫画高反差",
+    "Cabin Investigation Ditherpunk": "船舱调查 Ditherpunk",
+    "Copier Zine": "复印机 Zine",
+    "Soft E-Ink Grain": "电子墨水柔颗粒",
+    "Midnight Newspaper Halftone": "午夜报纸网点",
+    "Minimal Silhouette": "极简剪影",
+}
+
+COLOR_PRESET_LABELS_ZH = {
+    "Default Black and White": "默认黑白",
+    "Warm Gray Paper": "暖灰纸张",
+    "Mist Blue Limewash": "雾蓝石灰",
+    "Sage Paper": "鼠尾草纸",
+    "Terracotta Dust": "陶土灰粉",
+    "Deep Green Ivory": "墨绿米白",
+    "Charcoal Old Book": "炭黑旧书",
+    "Night Blue Matte": "夜蓝雾面",
+}
+
+UI_TEXT = {
+    "en": {
+        "title": "# ReShader - 1-bit Stylized Rendering",
+        "language": "Language",
+        "upload_image": "Upload Image",
+        "render": "Render",
+        "rendered_output": "Rendered Output",
+        "fullscreen": "Fullscreen",
+        "presets": "Presets",
+        "style_preset": "Style Preset",
+        "color_preset": "Color Preset",
+        "output_size": "Output Size",
+        "output_note": "Set to 0 to keep the source image dimension.",
+        "output_width": "Output Width (px)",
+        "output_height": "Output Height (px)",
+        "algorithm": "Dithering Algorithm",
+        "spacing": "Dot Spacing",
+        "preprocessing": "Preprocessing",
+        "contrast": "Contrast",
+        "brightness": "Brightness",
+        "edge_detection": "Edge Detection",
+        "enable_edge": "Enable Edge Overlay",
+        "edge_method": "Detection Method",
+        "edge_strength": "Sensitivity",
+        "edge_width": "Line Width",
+        "colors": "Colors",
+        "custom_foreground": "Custom Foreground",
+        "foreground_color": "Foreground Color",
+        "custom_background": "Custom Background",
+        "background_color": "Background Color",
+        "dual_region": "Dual-Region Dithering",
+        "enable_dual": "Enable Dual-Region Dithering",
+        "segmentation_method": "Segmentation Method",
+        "brightness_threshold": "Brightness Threshold",
+        "foreground_algorithm": "Foreground Algorithm",
+        "background_algorithm": "Background Algorithm",
+        "foreground_spacing": "Foreground Spacing",
+        "background_spacing": "Background Spacing",
+        "algorithm_params": "Algorithm Parameters",
+        "threshold_value": "Threshold Value",
+        "halftone_dot_size": "Halftone Dot Size",
+        "export": "Export",
+        "export_format": "Export Format",
+        "export_file": "Export File",
+        "download": "Download",
+        "seg_brightness": "Brightness",
+        "seg_edges": "Edges",
+    },
+    "zh": {
+        "title": "# ReShader - 1-bit 风格化渲染",
+        "language": "语言",
+        "upload_image": "上传图片",
+        "render": "渲染",
+        "rendered_output": "渲染结果",
+        "fullscreen": "全屏查看",
+        "presets": "预设参数",
+        "style_preset": "风格预设",
+        "color_preset": "双色预设",
+        "output_size": "输出尺寸",
+        "output_note": "设为 0 则使用原图对应维度。",
+        "output_width": "输出宽度 (px)",
+        "output_height": "输出高度 (px)",
+        "algorithm": "抖动算法",
+        "spacing": "点阵稀疏度",
+        "preprocessing": "预处理",
+        "contrast": "对比度",
+        "brightness": "亮度",
+        "edge_detection": "边缘检测",
+        "enable_edge": "启用描边",
+        "edge_method": "检测方法",
+        "edge_strength": "灵敏度",
+        "edge_width": "线宽",
+        "colors": "颜色",
+        "custom_foreground": "自定义前景色",
+        "foreground_color": "前景色",
+        "custom_background": "自定义背景色",
+        "background_color": "背景色",
+        "dual_region": "双区域抖动",
+        "enable_dual": "启用双区域抖动",
+        "segmentation_method": "分割方式",
+        "brightness_threshold": "亮度分割阈值",
+        "foreground_algorithm": "前景算法",
+        "background_algorithm": "背景算法",
+        "foreground_spacing": "前景稀疏度",
+        "background_spacing": "背景稀疏度",
+        "algorithm_params": "算法特定参数",
+        "threshold_value": "Threshold 阈值",
+        "halftone_dot_size": "Halftone 网点大小",
+        "export": "导出",
+        "export_format": "导出格式",
+        "export_file": "导出文件",
+        "download": "下载",
+        "seg_brightness": "亮度",
+        "seg_edges": "边缘",
+    },
+}
+
+
+def _language_key(language: str) -> str:
+    return "zh" if language == LANG_ZH else "en"
+
+
+def _style_preset_key(value: str | None) -> str:
+    if value in PRESETS:
+        return value
+    for key, label in STYLE_PRESET_LABELS_ZH.items():
+        if value == label:
+            return key
+    return DEFAULT_STYLE_PRESET
+
+
+def _color_preset_key(value: str | None) -> str:
+    if value in COLOR_PRESETS:
+        return value
+    for key, label in COLOR_PRESET_LABELS_ZH.items():
+        if value == label:
+            return key
+    return DEFAULT_COLOR_PRESET
+
+
+def _style_preset_choices(language: str) -> list[tuple[str, str]]:
+    if _language_key(language) == "zh":
+        return [(STYLE_PRESET_LABELS_ZH[key], key) for key in PRESETS]
+    return [(key, key) for key in PRESETS]
+
+
+def _color_preset_choices(language: str) -> list[tuple[str, str]]:
+    if _language_key(language) == "zh":
+        return [(COLOR_PRESET_LABELS_ZH[key], key) for key in COLOR_PRESETS]
+    return [(key, key) for key in COLOR_PRESETS]
+
+
+def _segmentation_choices(language: str) -> list[tuple[str, str]]:
+    text = UI_TEXT[_language_key(language)]
+    return [
+        (text["seg_brightness"], "brightness"),
+        (text["seg_edges"], "edges"),
+    ]
+
 
 def _resize_center_crop(img: Image.Image, target_w: int, target_h: int) -> Image.Image:
     """Resize to cover target dimensions, then center crop.
@@ -575,114 +739,201 @@ def download(fmt: str) -> str | None:
 
 
 def apply_preset(name: str) -> tuple:
-    preset = PRESETS.get(name, PRESETS["Basic Atkinson"])
+    preset = PRESETS.get(_style_preset_key(name), PRESETS[DEFAULT_STYLE_PRESET])
     return tuple(preset[field] for field in STYLE_PRESET_FIELDS)
 
 
 def apply_color_preset(name: str) -> tuple[str, str, bool, bool]:
-    return COLOR_PRESETS.get(name, COLOR_PRESETS["Default Black and White"])
+    return COLOR_PRESETS.get(_color_preset_key(name), COLOR_PRESETS[DEFAULT_COLOR_PRESET])
+
+
+def set_language(
+    language: str,
+    style_preset: str | None,
+    color_preset: str | None,
+) -> tuple:
+    text = UI_TEXT[_language_key(language)]
+    style_key = _style_preset_key(style_preset)
+    color_key = _color_preset_key(color_preset)
+
+    return (
+        gr.update(label=text["language"]),
+        gr.update(value=text["title"]),
+        gr.update(label=text["upload_image"]),
+        gr.update(value=text["render"]),
+        gr.update(label=text["rendered_output"]),
+        gr.update(value=text["fullscreen"]),
+        gr.update(label=text["presets"]),
+        gr.update(
+            label=text["style_preset"],
+            choices=_style_preset_choices(language),
+            value=style_key,
+        ),
+        gr.update(
+            label=text["color_preset"],
+            choices=_color_preset_choices(language),
+            value=color_key,
+        ),
+        gr.update(label=text["output_size"]),
+        gr.update(value=text["output_note"]),
+        gr.update(label=text["output_width"]),
+        gr.update(label=text["output_height"]),
+        gr.update(label=text["algorithm"]),
+        gr.update(label=text["spacing"]),
+        gr.update(label=text["preprocessing"]),
+        gr.update(label=text["contrast"]),
+        gr.update(label=text["brightness"]),
+        gr.update(label=text["edge_detection"]),
+        gr.update(label=text["enable_edge"]),
+        gr.update(label=text["edge_method"]),
+        gr.update(label=text["edge_strength"]),
+        gr.update(label=text["edge_width"]),
+        gr.update(label=text["colors"]),
+        gr.update(label=text["custom_foreground"]),
+        gr.update(label=text["foreground_color"]),
+        gr.update(label=text["custom_background"]),
+        gr.update(label=text["background_color"]),
+        gr.update(label=text["dual_region"]),
+        gr.update(label=text["enable_dual"]),
+        gr.update(label=text["segmentation_method"], choices=_segmentation_choices(language)),
+        gr.update(label=text["brightness_threshold"]),
+        gr.update(label=text["foreground_algorithm"]),
+        gr.update(label=text["background_algorithm"]),
+        gr.update(label=text["foreground_spacing"]),
+        gr.update(label=text["background_spacing"]),
+        gr.update(label=text["algorithm_params"]),
+        gr.update(label=text["threshold_value"]),
+        gr.update(label=text["halftone_dot_size"]),
+        gr.update(label=text["export"]),
+        gr.update(label=text["export_format"]),
+        gr.update(value=text["export_file"]),
+        gr.update(label=text["download"]),
+    )
 
 
 def build_ui() -> gr.Blocks:
     algo_names = list(list_algorithms().keys())
+    text = UI_TEXT["en"]
 
     with gr.Blocks(title="ReShader", fill_width=True) as app:
-        gr.Markdown("# ReShader - 1-bit Stylized Rendering", elem_id="title")
+        title = gr.Markdown(text["title"], elem_id="title")
 
         with gr.Row(elem_id="main-row", equal_height=False):
             # === Left: Upload + Render button ===
             with gr.Column(scale=1, min_width=200, elem_id="col-left"):
-                input_image = gr.Image(label="Upload Image", type="numpy", height=780)
-                render_btn = gr.Button("Render", variant="primary", size="lg")
+                input_image = gr.Image(label=text["upload_image"], type="numpy", height=780)
+                render_btn = gr.Button(text["render"], variant="primary", size="lg")
 
             # === Middle: Result ===
             with gr.Column(scale=3, min_width=400, elem_id="col-middle"):
                 output_image = gr.Image(
-                    label="Rendered Output",
+                    label=text["rendered_output"],
                     type="pil",
                     height=780,
                     interactive=False,
                     format="png",
                     buttons=["download"],
                 )
-                fullscreen_btn = gr.Button("Fullscreen", size="sm", elem_id="fullscreen-btn")
+                fullscreen_btn = gr.Button(text["fullscreen"], size="sm", elem_id="fullscreen-btn")
 
             # === Right: Parameters (independently scrollable) ===
             with gr.Column(scale=1, min_width=260, elem_id="col-right"):
-                with gr.Accordion("Presets", open=True):
+                language = gr.Radio(
+                    choices=[LANG_EN, LANG_ZH],
+                    value=LANG_EN,
+                    label=text["language"],
+                )
+
+                with gr.Accordion(text["presets"], open=True) as presets_acc:
                     preset_name = gr.Dropdown(
-                        choices=list(PRESETS.keys()),
-                        value="Basic Atkinson",
-                        label="Style Preset",
+                        choices=_style_preset_choices(LANG_EN),
+                        value=DEFAULT_STYLE_PRESET,
+                        label=text["style_preset"],
                     )
                     color_preset_name = gr.Dropdown(
-                        choices=list(COLOR_PRESETS.keys()),
-                        value="Warm Gray Paper",
-                        label="Color Preset",
+                        choices=_color_preset_choices(LANG_EN),
+                        value=DEFAULT_COLOR_PRESET,
+                        label=text["color_preset"],
                     )
 
-                with gr.Accordion("Output Size", open=True):
-                    gr.Markdown("Set to 0 to keep the source image dimension.")
-                    output_w = gr.Number(value=0, label="Output Width (px)", precision=0, minimum=0)
-                    output_h = gr.Number(value=0, label="Output Height (px)", precision=0, minimum=0)
+                with gr.Accordion(text["output_size"], open=True) as output_size_acc:
+                    output_size_note = gr.Markdown(text["output_note"])
+                    output_w = gr.Number(
+                        value=0, label=text["output_width"], precision=0, minimum=0,
+                    )
+                    output_h = gr.Number(
+                        value=0, label=text["output_height"], precision=0, minimum=0,
+                    )
 
                 algorithm = gr.Dropdown(
-                    choices=algo_names, value="atkinson", label="Dithering Algorithm",
+                    choices=algo_names, value="atkinson", label=text["algorithm"],
                 )
-                spacing = gr.Slider(1, 8, value=1, step=1, label="Dot Spacing")
+                spacing = gr.Slider(1, 8, value=1, step=1, label=text["spacing"])
 
-                with gr.Accordion("Preprocessing", open=False):
-                    contrast = gr.Slider(0.2, 3.0, value=1.0, step=0.1, label="Contrast")
-                    brightness = gr.Slider(-128, 128, value=0, step=1, label="Brightness")
-
-                with gr.Accordion("Edge Detection", open=True):
-                    edge_enabled = gr.Checkbox(value=False, label="Enable Edge Overlay")
-                    edge_method = gr.Dropdown(
-                        choices=["canny", "sobel"], value="canny", label="Detection Method",
+                with gr.Accordion(text["preprocessing"], open=False) as preprocessing_acc:
+                    contrast = gr.Slider(
+                        0.2, 3.0, value=1.0, step=0.1, label=text["contrast"],
                     )
-                    edge_strength = gr.Slider(0.1, 3.0, value=1.0, step=0.1, label="Sensitivity")
-                    edge_width = gr.Slider(1, 5, value=1, step=1, label="Line Width")
+                    brightness = gr.Slider(
+                        -128, 128, value=0, step=1, label=text["brightness"],
+                    )
 
-                with gr.Accordion("Colors", open=False):
-                    use_fg = gr.Checkbox(value=False, label="Custom Foreground")
-                    fg_color = gr.ColorPicker(value="#000000", label="Foreground Color")
-                    use_bg = gr.Checkbox(value=False, label="Custom Background")
-                    bg_color = gr.ColorPicker(value="#F5E6D0", label="Background Color")
+                with gr.Accordion(text["edge_detection"], open=True) as edge_acc:
+                    edge_enabled = gr.Checkbox(value=False, label=text["enable_edge"])
+                    edge_method = gr.Dropdown(
+                        choices=["canny", "sobel"], value="canny", label=text["edge_method"],
+                    )
+                    edge_strength = gr.Slider(
+                        0.1, 3.0, value=1.0, step=0.1, label=text["edge_strength"],
+                    )
+                    edge_width = gr.Slider(1, 5, value=1, step=1, label=text["edge_width"])
 
-                with gr.Accordion("Dual-Region Dithering", open=False):
-                    dual_enabled = gr.Checkbox(value=False, label="Enable Dual-Region Dithering")
+                with gr.Accordion(text["colors"], open=False) as colors_acc:
+                    use_fg = gr.Checkbox(value=False, label=text["custom_foreground"])
+                    fg_color = gr.ColorPicker(value="#000000", label=text["foreground_color"])
+                    use_bg = gr.Checkbox(value=False, label=text["custom_background"])
+                    bg_color = gr.ColorPicker(value="#F5E6D0", label=text["background_color"])
+
+                with gr.Accordion(text["dual_region"], open=False) as dual_acc:
+                    dual_enabled = gr.Checkbox(value=False, label=text["enable_dual"])
                     dual_seg_method = gr.Dropdown(
-                        choices=["brightness", "edges"], value="brightness",
-                        label="Segmentation Method",
+                        choices=_segmentation_choices(LANG_EN), value="brightness",
+                        label=text["segmentation_method"],
                     )
                     dual_seg_threshold = gr.Slider(
-                        0, 255, value=128, step=1, label="Brightness Threshold",
+                        0, 255, value=128, step=1, label=text["brightness_threshold"],
                     )
                     dual_fg_algo = gr.Dropdown(
                         choices=algo_names, value="bayer4x4",
-                        label="Foreground Algorithm",
+                        label=text["foreground_algorithm"],
                     )
                     dual_bg_algo = gr.Dropdown(
                         choices=algo_names, value="bluenoise",
-                        label="Background Algorithm",
+                        label=text["background_algorithm"],
                     )
                     dual_fg_spacing = gr.Slider(
-                        1, 8, value=1, step=1, label="Foreground Spacing",
+                        1, 8, value=1, step=1, label=text["foreground_spacing"],
                     )
                     dual_bg_spacing = gr.Slider(
-                        1, 8, value=1, step=1, label="Background Spacing",
+                        1, 8, value=1, step=1, label=text["background_spacing"],
                     )
 
-                with gr.Accordion("Algorithm Parameters", open=False):
-                    threshold_val = gr.Slider(0, 255, value=128, step=1, label="Threshold Value")
-                    dot_size = gr.Slider(2, 20, value=8, step=1, label="Halftone Dot Size")
+                with gr.Accordion(text["algorithm_params"], open=False) as algorithm_params_acc:
+                    threshold_val = gr.Slider(
+                        0, 255, value=128, step=1, label=text["threshold_value"],
+                    )
+                    dot_size = gr.Slider(
+                        2, 20, value=8, step=1, label=text["halftone_dot_size"],
+                    )
 
-                with gr.Accordion("Export", open=False):
+                with gr.Accordion(text["export"], open=False) as export_acc:
                     dl_format = gr.Dropdown(
-                        choices=["png", "jpg", "bmp", "tiff"], value="png", label="Export Format",
+                        choices=["png", "jpg", "bmp", "tiff"],
+                        value="png",
+                        label=text["export_format"],
                     )
-                    dl_btn = gr.Button("Export File")
-                    dl_file = gr.File(label="Download", interactive=False)
+                    dl_btn = gr.Button(text["export_file"])
+                    dl_file = gr.File(label=text["download"], interactive=False)
 
         # --- Events ---
         all_inputs = [
@@ -703,6 +954,56 @@ def build_ui() -> gr.Blocks:
             dual_fg_algo, dual_bg_algo,
             dual_fg_spacing, dual_bg_spacing,
         ]
+        language_outputs = [
+            language,
+            title,
+            input_image,
+            render_btn,
+            output_image,
+            fullscreen_btn,
+            presets_acc,
+            preset_name,
+            color_preset_name,
+            output_size_acc,
+            output_size_note,
+            output_w,
+            output_h,
+            algorithm,
+            spacing,
+            preprocessing_acc,
+            contrast,
+            brightness,
+            edge_acc,
+            edge_enabled,
+            edge_method,
+            edge_strength,
+            edge_width,
+            colors_acc,
+            use_fg,
+            fg_color,
+            use_bg,
+            bg_color,
+            dual_acc,
+            dual_enabled,
+            dual_seg_method,
+            dual_seg_threshold,
+            dual_fg_algo,
+            dual_bg_algo,
+            dual_fg_spacing,
+            dual_bg_spacing,
+            algorithm_params_acc,
+            threshold_val,
+            dot_size,
+            export_acc,
+            dl_format,
+            dl_btn,
+            dl_file,
+        ]
+        language.change(
+            fn=set_language,
+            inputs=[language, preset_name, color_preset_name],
+            outputs=language_outputs,
+        )
         preset_name.change(fn=apply_preset, inputs=preset_name, outputs=preset_outputs)
         color_preset_name.change(
             fn=apply_color_preset,
