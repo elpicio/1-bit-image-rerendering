@@ -242,7 +242,7 @@ STYLE_PRESET_FIELDS = [
 COLOR_FIELDS = ["fg_color", "bg_color", "use_fg", "use_bg"]
 
 PRESETS = {
-    "基础 Atkinson": {
+    "Basic Atkinson": {
         "algorithm": "atkinson",
         "spacing": 1,
         "contrast": 1.0,
@@ -265,7 +265,7 @@ PRESETS = {
         "dual_fg_spacing": 1,
         "dual_bg_spacing": 1,
     },
-    "恐怖漫画高反差": {
+    "Horror Manga High Contrast": {
         "algorithm": "threshold",
         "spacing": 2,
         "contrast": 1.85,
@@ -288,7 +288,7 @@ PRESETS = {
         "dual_fg_spacing": 1,
         "dual_bg_spacing": 1,
     },
-    "船舱调查 Ditherpunk": {
+    "Cabin Investigation Ditherpunk": {
         "algorithm": "atkinson",
         "spacing": 1,
         "contrast": 1.3,
@@ -311,7 +311,7 @@ PRESETS = {
         "dual_fg_spacing": 1,
         "dual_bg_spacing": 2,
     },
-    "复印机 Zine": {
+    "Copier Zine": {
         "algorithm": "bayer2x2",
         "spacing": 3,
         "contrast": 1.9,
@@ -334,7 +334,7 @@ PRESETS = {
         "dual_fg_spacing": 1,
         "dual_bg_spacing": 1,
     },
-    "电子墨水柔颗粒": {
+    "Soft E-Ink Grain": {
         "algorithm": "bluenoise",
         "spacing": 1,
         "contrast": 1.08,
@@ -357,7 +357,7 @@ PRESETS = {
         "dual_fg_spacing": 1,
         "dual_bg_spacing": 1,
     },
-    "午夜报纸网点": {
+    "Midnight Newspaper Halftone": {
         "algorithm": "halftone",
         "spacing": 1,
         "contrast": 1.45,
@@ -380,7 +380,7 @@ PRESETS = {
         "dual_fg_spacing": 1,
         "dual_bg_spacing": 1,
     },
-    "极简剪影": {
+    "Minimal Silhouette": {
         "algorithm": "threshold",
         "spacing": 4,
         "contrast": 2.15,
@@ -406,14 +406,14 @@ PRESETS = {
 }
 
 COLOR_PRESETS = {
-    "默认黑白": ("#000000", "#FFFFFF", False, False),
-    "暖灰纸张": ("#2F2A27", "#E8DED1", True, True),
-    "雾蓝石灰": ("#2D3A3F", "#D7D8D2", True, True),
-    "鼠尾草纸": ("#3B4038", "#D9D7C7", True, True),
-    "陶土灰粉": ("#4A3632", "#DDD0C6", True, True),
-    "墨绿米白": ("#26352F", "#E7E0D0", True, True),
-    "炭黑旧书": ("#221F1D", "#D6C8B5", True, True),
-    "夜蓝雾面": ("#252E3A", "#D3D1C7", True, True),
+    "Default Black and White": ("#000000", "#FFFFFF", False, False),
+    "Warm Gray Paper": ("#2F2A27", "#E8DED1", True, True),
+    "Mist Blue Limewash": ("#2D3A3F", "#D7D8D2", True, True),
+    "Sage Paper": ("#3B4038", "#D9D7C7", True, True),
+    "Terracotta Dust": ("#4A3632", "#DDD0C6", True, True),
+    "Deep Green Ivory": ("#26352F", "#E7E0D0", True, True),
+    "Charcoal Old Book": ("#221F1D", "#D6C8B5", True, True),
+    "Night Blue Matte": ("#252E3A", "#D3D1C7", True, True),
 }
 
 
@@ -575,114 +575,114 @@ def download(fmt: str) -> str | None:
 
 
 def apply_preset(name: str) -> tuple:
-    preset = PRESETS.get(name, PRESETS["基础 Atkinson"])
+    preset = PRESETS.get(name, PRESETS["Basic Atkinson"])
     return tuple(preset[field] for field in STYLE_PRESET_FIELDS)
 
 
 def apply_color_preset(name: str) -> tuple[str, str, bool, bool]:
-    return COLOR_PRESETS.get(name, COLOR_PRESETS["默认黑白"])
+    return COLOR_PRESETS.get(name, COLOR_PRESETS["Default Black and White"])
 
 
 def build_ui() -> gr.Blocks:
     algo_names = list(list_algorithms().keys())
 
     with gr.Blocks(title="ReShader", fill_width=True) as app:
-        gr.Markdown("# ReShader — 1-bit 风格化渲染", elem_id="title")
+        gr.Markdown("# ReShader - 1-bit Stylized Rendering", elem_id="title")
 
         with gr.Row(elem_id="main-row", equal_height=False):
             # === Left: Upload + Render button ===
             with gr.Column(scale=1, min_width=200, elem_id="col-left"):
-                input_image = gr.Image(label="上传图片", type="numpy", height=780)
-                render_btn = gr.Button("渲染", variant="primary", size="lg")
+                input_image = gr.Image(label="Upload Image", type="numpy", height=780)
+                render_btn = gr.Button("Render", variant="primary", size="lg")
 
             # === Middle: Result ===
             with gr.Column(scale=3, min_width=400, elem_id="col-middle"):
                 output_image = gr.Image(
-                    label="渲染结果",
+                    label="Rendered Output",
                     type="pil",
                     height=780,
                     interactive=False,
                     format="png",
                     buttons=["download"],
                 )
-                fullscreen_btn = gr.Button("全屏查看", size="sm", elem_id="fullscreen-btn")
+                fullscreen_btn = gr.Button("Fullscreen", size="sm", elem_id="fullscreen-btn")
 
             # === Right: Parameters (independently scrollable) ===
             with gr.Column(scale=1, min_width=260, elem_id="col-right"):
-                with gr.Accordion("预设参数", open=True):
+                with gr.Accordion("Presets", open=True):
                     preset_name = gr.Dropdown(
                         choices=list(PRESETS.keys()),
-                        value="基础 Atkinson",
-                        label="风格预设",
+                        value="Basic Atkinson",
+                        label="Style Preset",
                     )
                     color_preset_name = gr.Dropdown(
                         choices=list(COLOR_PRESETS.keys()),
-                        value="暖灰纸张",
-                        label="双色预设",
+                        value="Warm Gray Paper",
+                        label="Color Preset",
                     )
 
-                with gr.Accordion("输出尺寸", open=True):
-                    gr.Markdown("设为 0 则使用原图对应维度")
-                    output_w = gr.Number(value=0, label="输出宽度 (px)", precision=0, minimum=0)
-                    output_h = gr.Number(value=0, label="输出高度 (px)", precision=0, minimum=0)
+                with gr.Accordion("Output Size", open=True):
+                    gr.Markdown("Set to 0 to keep the source image dimension.")
+                    output_w = gr.Number(value=0, label="Output Width (px)", precision=0, minimum=0)
+                    output_h = gr.Number(value=0, label="Output Height (px)", precision=0, minimum=0)
 
                 algorithm = gr.Dropdown(
-                    choices=algo_names, value="atkinson", label="抖动算法",
+                    choices=algo_names, value="atkinson", label="Dithering Algorithm",
                 )
-                spacing = gr.Slider(1, 8, value=1, step=1, label="点阵稀疏度 (spacing)")
+                spacing = gr.Slider(1, 8, value=1, step=1, label="Dot Spacing")
 
-                with gr.Accordion("预处理", open=False):
-                    contrast = gr.Slider(0.2, 3.0, value=1.0, step=0.1, label="对比度")
-                    brightness = gr.Slider(-128, 128, value=0, step=1, label="亮度")
+                with gr.Accordion("Preprocessing", open=False):
+                    contrast = gr.Slider(0.2, 3.0, value=1.0, step=0.1, label="Contrast")
+                    brightness = gr.Slider(-128, 128, value=0, step=1, label="Brightness")
 
-                with gr.Accordion("边缘检测", open=True):
-                    edge_enabled = gr.Checkbox(value=False, label="启用描边")
+                with gr.Accordion("Edge Detection", open=True):
+                    edge_enabled = gr.Checkbox(value=False, label="Enable Edge Overlay")
                     edge_method = gr.Dropdown(
-                        choices=["canny", "sobel"], value="canny", label="检测方法",
+                        choices=["canny", "sobel"], value="canny", label="Detection Method",
                     )
-                    edge_strength = gr.Slider(0.1, 3.0, value=1.0, step=0.1, label="灵敏度")
-                    edge_width = gr.Slider(1, 5, value=1, step=1, label="线宽")
+                    edge_strength = gr.Slider(0.1, 3.0, value=1.0, step=0.1, label="Sensitivity")
+                    edge_width = gr.Slider(1, 5, value=1, step=1, label="Line Width")
 
-                with gr.Accordion("颜色", open=False):
-                    use_fg = gr.Checkbox(value=False, label="自定义前景色")
-                    fg_color = gr.ColorPicker(value="#000000", label="前景色 (点/线)")
-                    use_bg = gr.Checkbox(value=False, label="自定义背景色")
-                    bg_color = gr.ColorPicker(value="#F5E6D0", label="背景色")
+                with gr.Accordion("Colors", open=False):
+                    use_fg = gr.Checkbox(value=False, label="Custom Foreground")
+                    fg_color = gr.ColorPicker(value="#000000", label="Foreground Color")
+                    use_bg = gr.Checkbox(value=False, label="Custom Background")
+                    bg_color = gr.ColorPicker(value="#F5E6D0", label="Background Color")
 
-                with gr.Accordion("双区域抖动", open=False):
-                    dual_enabled = gr.Checkbox(value=False, label="启用双区域抖动")
+                with gr.Accordion("Dual-Region Dithering", open=False):
+                    dual_enabled = gr.Checkbox(value=False, label="Enable Dual-Region Dithering")
                     dual_seg_method = gr.Dropdown(
                         choices=["brightness", "edges"], value="brightness",
-                        label="分割方式",
+                        label="Segmentation Method",
                     )
                     dual_seg_threshold = gr.Slider(
-                        0, 255, value=128, step=1, label="亮度分割阈值",
+                        0, 255, value=128, step=1, label="Brightness Threshold",
                     )
                     dual_fg_algo = gr.Dropdown(
                         choices=algo_names, value="bayer4x4",
-                        label="前景算法（清晰规则）",
+                        label="Foreground Algorithm",
                     )
                     dual_bg_algo = gr.Dropdown(
                         choices=algo_names, value="bluenoise",
-                        label="背景算法（有机柔和）",
+                        label="Background Algorithm",
                     )
                     dual_fg_spacing = gr.Slider(
-                        1, 8, value=1, step=1, label="前景稀疏度",
+                        1, 8, value=1, step=1, label="Foreground Spacing",
                     )
                     dual_bg_spacing = gr.Slider(
-                        1, 8, value=1, step=1, label="背景稀疏度",
+                        1, 8, value=1, step=1, label="Background Spacing",
                     )
 
-                with gr.Accordion("算法特定参数", open=False):
-                    threshold_val = gr.Slider(0, 255, value=128, step=1, label="Threshold 阈值")
-                    dot_size = gr.Slider(2, 20, value=8, step=1, label="Halftone 网点大小")
+                with gr.Accordion("Algorithm Parameters", open=False):
+                    threshold_val = gr.Slider(0, 255, value=128, step=1, label="Threshold Value")
+                    dot_size = gr.Slider(2, 20, value=8, step=1, label="Halftone Dot Size")
 
-                with gr.Accordion("导出", open=False):
+                with gr.Accordion("Export", open=False):
                     dl_format = gr.Dropdown(
-                        choices=["png", "jpg", "bmp", "tiff"], value="png", label="导出格式",
+                        choices=["png", "jpg", "bmp", "tiff"], value="png", label="Export Format",
                     )
-                    dl_btn = gr.Button("导出文件")
-                    dl_file = gr.File(label="下载", interactive=False)
+                    dl_btn = gr.Button("Export File")
+                    dl_file = gr.File(label="Download", interactive=False)
 
         # --- Events ---
         all_inputs = [
