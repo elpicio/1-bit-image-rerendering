@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""ReShader — Gradio UI for interactive 1-bit stylized rendering."""
+"""Gradio UI for interactive 1-bit image rerendering."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ _last_result: Image.Image | None = None
 
 CSS = """
 :root {
-    --reshader-title-height: 52px;
+    --app-title-height: 52px;
 }
 
 html, body {
@@ -51,14 +51,14 @@ html, body {
     height: 100vh !important;
     max-height: 100vh !important;
     overflow: hidden !important;
-    padding-top: var(--reshader-title-height) !important;
+    padding-top: var(--app-title-height) !important;
     margin-top: 0 !important;
     align-items: flex-start !important;
 }
 
 #col-left, #col-middle, #col-right {
-    height: calc(100vh - var(--reshader-title-height)) !important;
-    max-height: calc(100vh - var(--reshader-title-height)) !important;
+    height: calc(100vh - var(--app-title-height)) !important;
+    max-height: calc(100vh - var(--app-title-height)) !important;
     align-self: flex-start !important;
     box-sizing: border-box;
     min-height: 0 !important;
@@ -160,7 +160,7 @@ JS_INIT = """
     if (title && row) {
         const h = title.offsetHeight;
         const mainHeight = `calc(100vh - ${h}px)`;
-        document.documentElement.style.setProperty('--reshader-title-height', h + 'px');
+        document.documentElement.style.setProperty('--app-title-height', h + 'px');
         row.style.display = 'flex';
         row.style.flexWrap = 'nowrap';
         row.style.overflow = 'hidden';
@@ -443,7 +443,7 @@ COLOR_PRESET_LABELS_ZH = {
 
 UI_TEXT = {
     "en": {
-        "title": "# ReShader - 1-bit Stylized Rendering",
+        "title": "# 1-bit Image Rerendering",
         "language": "Language",
         "upload_image": "Upload Image",
         "render": "Render",
@@ -490,7 +490,7 @@ UI_TEXT = {
         "seg_edges": "Edges",
     },
     "zh": {
-        "title": "# ReShader - 1-bit 风格化渲染",
+        "title": "# 1-bit Image Rerendering",
         "language": "语言",
         "upload_image": "上传图片",
         "render": "渲染",
@@ -729,7 +729,7 @@ def download(fmt: str) -> str | None:
         return None
 
     ext = fmt.lower()
-    path = f"/tmp/reshader_output.{ext}"
+    path = f"/tmp/1bit_image_rerendering_output.{ext}"
     if ext == "jpg":
         img = _last_result.convert("RGB") if _last_result.mode != "RGB" else _last_result
         img.save(path, quality=95)
@@ -815,7 +815,7 @@ def build_ui() -> gr.Blocks:
     algo_names = list(list_algorithms().keys())
     text = UI_TEXT["en"]
 
-    with gr.Blocks(title="ReShader", fill_width=True) as app:
+    with gr.Blocks(title="1-bit Image Rerendering", fill_width=True) as app:
         title = gr.Markdown(text["title"], elem_id="title")
 
         with gr.Row(elem_id="main-row", equal_height=False):
